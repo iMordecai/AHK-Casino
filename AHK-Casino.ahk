@@ -19,7 +19,7 @@ Gui, Casino:Add, Button, ys-1 wp gGo, Go
 Gui, Casino:Font, s13
 Gui, Casino:Add, Text, w%LVWidth% vTotal Center xs, %TotalCoins% coins
 Gui, Casino:Font
-Gui, Casino:Add, Progress, wp h4 vProgress Range0-60, 0
+Gui, Casino:Add, Progress, wp h4 vProgress Range0-120, 0
 Gui, Casino:Add, Edit, section xs w%LVWidth% vResult,
 Gui, Casino:Add, Button, xs-1 wp+2 gUpdate, Update
 Gui, Casino:Show, , AHK Casino
