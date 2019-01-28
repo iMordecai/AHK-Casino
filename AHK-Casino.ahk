@@ -6,7 +6,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance, Force
 
 LVWidth:= 200
-BtnWidth := (LVWidth-29)/3
+BtnWidth := (LVWidth-18)/3
 TotalCoins := "Please update your"
 Cooldown := 0
 
@@ -67,6 +67,7 @@ Else If (FoundAmount > 0) AND (StrLen(zamount1) > 0)
 	GuiControl, Text, Result,
 }
 GuiControl, , Progress, 0
+GuiControl, Casino: +cBlue, Progress
 Cooldown := 0
 SetTimer, UpdateCooldown, 30000
 Return
@@ -74,4 +75,6 @@ Return
 UpdateCooldown:
 Cooldown++
 GuiControl, Casino:, Progress, +1
+if (Cooldown > 119)
+    GuiControl, Casino: +cGreen, Progress
 Return
