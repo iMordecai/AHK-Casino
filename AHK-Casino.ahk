@@ -5,16 +5,17 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Persistent
 #SingleInstance, Force
 
-LVWidth:= 200
-BtnWidth := (LVWidth-18)/3
+LVWidth:= 220
+BtnWidth := (LVWidth-28)/3
 TotalCoins := "Please update your"
 Cooldown := 0
 
 Gui, Casino:New
 Gui, Casino:Add, ListView, w%LVWidth% h200, Bet|Multiplier|Won|SubTotal
-Gui, Casino:Add, Edit, section w%BtnWidth%  vPercentage Number,
+Gui, Casino:Add, Edit, section w%BtnWidth% gNewBet vPercentage Number,
 Gui, Casino:Add, UpDown, Range0.01-100 gNewBet, 20
-Gui, Casino:Add, Edit, ys wp  vBet Number,1
+Gui, Casino:Add, Text, ys+3 xp+%BtnWidth%+5, `%
+Gui, Casino:Add, Edit, ys w%BtnWidth%  vBet Number,1
 Gui, Casino:Add, Button, ys-1 wp gGo, Go
 Gui, Casino:Font, s13
 Gui, Casino:Add, Text, w%LVWidth% vTotal Center xs, %TotalCoins% coins
