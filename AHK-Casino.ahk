@@ -21,11 +21,17 @@ Gui, Casino:Font, s13
 Gui, Casino:Add, Text, w%LVWidth% vTotal Center xs, %TotalCoins% coins
 Gui, Casino:Font
 Gui, Casino:Add, Progress, wp h4 vProgress Range0-120, 0
-Gui, Casino:Add, Edit, section xs w%LVWidth% vResult,
-Gui, Casino:Add, Button, xs-1 wp+2 gUpdate, Update
+Gui, Casino:Add, Edit, section xs w%LVWidth% vResult hwndHED1 Center,
+SetEditCueBanner(HED1, "Paste the result here")
+Gui, Casino:Add, Button, xs-1 wp+2 gUpdate Default, Update
 Gui, Casino:Show, , AHK Casino
 
 Return
+
+SetEditCueBanner(HWND, Cue) { 
+   Static EM_SETCUEBANNER := (0x1500 + 1)
+   Return DllCall("User32.dll\SendMessageW", "Ptr", HWND, "Uint", EM_SETCUEBANNER, "Ptr", True, "WStr", Cue)
+}
 
 NewBet:
 Gui, Casino:Submit, NoHide
