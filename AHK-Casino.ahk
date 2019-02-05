@@ -66,7 +66,7 @@ Update:
 	Else If (FoundAmount > 0) AND (StrLen(zamount1) > 0)
 	{
 		TotalCoins := StrReplace(zamount1, ",")															; updates the new TotalCoins
-		GuiControl, Text, Total, % TotalCoins " coins"
+		GuiControl, Text, Total, % RegExReplace(TotalCoins, "(?:^[^1-9.]*[1-9]\d{0,2}|(?<=.)\G\d{3})(?=(?:\d{3})+(?:\D|$))", "$0,") " coins"
 		GuiControl, Text, Bet, % Format("{1:i}",TotalCoins*Percentage/100)
 		GuiControl, Text, Result,
 		SetEditCueBanner(HED1, "Paste the result here")													; changes the placeholder/cue of the update edit box
