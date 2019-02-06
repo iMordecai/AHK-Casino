@@ -46,7 +46,7 @@ Update:
 	If (FoundLoss > 0)
 	{
 		TotalCoins -= StrReplace(zloss1, ",")															; subtracts the loss (removing the commas from the number)
-		GuiControl, Text, Total, % TotalCoins " coins"													; updates the TotalCoins
+		GuiControl, Text, Total, % RegExReplace(TotalCoins, "(?:^[^1-9.]*[1-9]\d{0,2}|(?<=.)\G\d{3})(?=(?:\d{3})+(?:\D|$))", "$0,") " coins" ; show total coins with commas
 		GuiControl, Text, Result,																		; removes the betting results (that was pasted)
 		LV_Add("", zloss1, "0", zloss1, TotalCoins)														; adds the result to the ListView
 		LV_ModifyCol()																					; resizes the ListView to fit the width
@@ -56,7 +56,7 @@ Update:
 	Else If (FoundWin > 0)
 	{
 		TotalCoins += StrReplace(zwin2, ",")															; adds the new winnings to the TotalCoins
-		GuiControl, Text, Total, % TotalCoins " coins"
+		GuiControl, Text, Total, % RegExReplace(TotalCoins, "(?:^[^1-9.]*[1-9]\d{0,2}|(?<=.)\G\d{3})(?=(?:\d{3})+(?:\D|$))", "$0,") " coins" ; show total coins with commas
 		GuiControl, Text, Result,
 		LV_Add("", Bet, zwin1, zwin2, TotalCoins)
 		LV_ModifyCol()
@@ -66,7 +66,7 @@ Update:
 	Else If (FoundAmount > 0) AND (StrLen(zamount1) > 0)
 	{
 		TotalCoins := StrReplace(zamount1, ",")															; updates the new TotalCoins
-		GuiControl, Text, Total, % RegExReplace(TotalCoins, "(?:^[^1-9.]*[1-9]\d{0,2}|(?<=.)\G\d{3})(?=(?:\d{3})+(?:\D|$))", "$0,") " coins"
+		GuiControl, Text, Total, % RegExReplace(TotalCoins, "(?:^[^1-9.]*[1-9]\d{0,2}|(?<=.)\G\d{3})(?=(?:\d{3})+(?:\D|$))", "$0,") " coins" ; show total coins with commas
 		GuiControl, Text, Bet, % Format("{1:i}",TotalCoins*Percentage/100)
 		GuiControl, Text, Result,
 		SetEditCueBanner(HED1, "Paste the result here")													; changes the placeholder/cue of the update edit box
