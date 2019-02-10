@@ -5,7 +5,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Persistent
 #SingleInstance, Force
 
-LVWidth:= 220							; default ListView width for betting results
+LVWidth:= 280							; default ListView width for betting results
 BtnWidth := (LVWidth-28)/3				; width fof buttons (buttons will be about the same as ListView)
 TotalCoins := "Please update your"		; placeholder for coins amount
 Cooldown := 0
@@ -40,9 +40,10 @@ Return
 
 Update:
 	Gui, Casino:Submit, NoHide
-	FoundLoss 	:= RegExMatch(Result, "Sorry, you lost ([\d,]*) coins", zloss)							; checks if there was a loss
-	FoundWin 	:= RegExMatch(Result, "You hit a ([\d\.]*)x multiplier and won ([\d,]*) coins", zwin)	; checks if there was a win
-	FoundAmount	:= RegExMatch(Result, "^\W*([\d,]*)\W*(?:coins)?", zamount)								; checks if just a number (or number and " coins")
+	FoundLoss 			:= RegExMatch(Result, "Sorry, you lost ([\d,]*) coins", zloss)							; checks if there was a loss
+	FoundWin 			:= RegExMatch(Result, "You hit a ([\d\.]*)x multiplier and won ([\d,]*) coins", zwin)	; checks if there was a win
+	FoundWinPercentage 	:= RegExMatch(Result, "You hit a ([\d\.]*)x multiplier on your ([\d,]*) coin bet and won ([\d,]*) coins", zwinp)	; checks if the
+	FoundAmount			:= RegExMatch(Result, "^\W*([\d,]*)\W*(?:coins)?", zamount)								; checks if just a number (or number and " coins")
 	If (FoundLoss > 0)
 	{
 		TotalCoins -= StrReplace(zloss1, ",")															; subtracts the loss (removing the commas from the number)
@@ -59,6 +60,16 @@ Update:
 		GuiControl, Text, Total, % RegExReplace(TotalCoins, "(?:^[^1-9.]*[1-9]\d{0,2}|(?<=.)\G\d{3})(?=(?:\d{3})+(?:\D|$))", "$0,") " coins" ; show total coins with commas
 		GuiControl, Text, Result,
 		LV_Add("", Bet, zwin1, zwin2, TotalCoins)
+		LV_ModifyCol()
+		LV_Modify(LV_GetCount(), "Vis")
+		GuiControl, Text, Bet, % Format("{1:i}",TotalCoins*Percentage/100)
+	} 
+	Else If (FoundWinPercentage > 0)
+	{
+		TotalCoins += StrReplace(zwinp3, ",")															; adds the new winnings to the TotalCoins
+		GuiControl, Text, Total, % RegExReplace(TotalCoins, "(?:^[^1-9.]*[1-9]\d{0,2}|(?<=.)\G\d{3})(?=(?:\d{3})+(?:\D|$))", "$0,") " coins" ; show total coins with commas
+		GuiControl, Text, Result,
+		LV_Add("", zwinp2, zwinp1, zwinp3, TotalCoins)
 		LV_ModifyCol()
 		LV_Modify(LV_GetCount(), "Vis")
 		GuiControl, Text, Bet, % Format("{1:i}",TotalCoins*Percentage/100)
